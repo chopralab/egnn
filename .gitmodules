@@ -1,0 +1,3 @@
+[submodule "candock"]
+	path = candock
+	url = https://github.com/chopralab/candock.git
