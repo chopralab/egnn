@@ -23,7 +23,7 @@ A copy of the CANDOCK docking program is provided in the CANDOCK submodule direc
 ```bash
 git clone https://github.com/chopralab/egnn.git
 cd egnn
-git submodule update --all
+git submodule update --init --recursive
 ```
 
 The above commands will download both the *EGNN* Python scripts required for training a model and the **C++** docking code for CANDOCK v0.6.0.
