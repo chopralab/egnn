@@ -218,12 +218,12 @@ if __name__ == "__main__":
     n_fingerprint = len(fingerprint_dict)
 
     """Create a dataset and split it into train/dev/test."""
-    dataset = list(zip(Smiles, Molecules, adjacencies, docking_scores, correct_properties))  
+    dataset = list(zip(Smiles, Molecules, adjacencies, docking_scores, correct_properties)) 
     dataset = shuffle_dataset(dataset, 1234)
 
 
     """Set a model."""
-    x = [random.randint(1,1000000) for i in range(1000)]
+    x = [random.randint(1000,10000000) for i in range(1000)]
     for l in x:
         torch.manual_seed(l)
         model = GraphNeuralNetwork().to(device)

@@ -21,9 +21,9 @@ class GraphNeuralNetwork(nn.Module):
         self.embed_fingerprint = nn.Embedding(n_fingerprint, dim)
         self.W_fingerprint = nn.ModuleList([nn.Linear(dim, dim)
                                             for _ in range(hidden_layer)])
-        self.W_output = nn.ModuleList([nn.Linear(dim, dim)
+        self.W_output = nn.ModuleList([nn.Linear(dim+96, dim+96)
                                        for _ in range(output_layer)])
-        self.W_property = nn.Linear(dim, 2)
+        self.W_property = nn.Linear(dim+96, 2)
 
     def pad(self, matrices, pad_value):
         """Pad adjacency matrices for batch processing."""
@@ -54,7 +54,7 @@ class GraphNeuralNetwork(nn.Module):
 
     def forward(self, inputs):
 
-        Smiles, fingerprints, adjacencies = inputs
+        Smiles, fingerprints, adjacencies, docking_scores = inputs
         axis = list(map(lambda x: len(x), fingerprints))
 
         M = np.concatenate([np.repeat(len(f), len(f)) for f in fingerprints])
@@ -73,10 +73,18 @@ class GraphNeuralNetwork(nn.Module):
         if output == 'mean':
             molecular_vectors = self.mean_axis(fingerprint_vectors, axis)
 
+        """getting docking scores and concatenate them with molecular vectors"""
+        
+        docking_scores = torch.from_numpy(np.asarray(docking_scores)).to(device)
+            
+        y_cat = torch.cat((docking_scores, molecular_vectors), 1)
+        
         for j in range(output_layer):
-            molecular_vectors = torch.relu(self.W_output[j](molecular_vectors))
+            y_cat = torch.relu(self.W_output[j](y_cat))
 
-        predicted_properties = self.W_property(molecular_vectors)
+#        print(y_cat)
+
+        predicted_properties = self.W_property(y_cat)
 
         return Smiles, predicted_properties
 
@@ -142,6 +150,7 @@ if __name__ == "__main__":
 #        print(Smiles)
     Molecules = load_tensor(dir_input + 'Molecules', torch.LongTensor)
     adjacencies = load_numpy(dir_input + 'adjacencies')
+    docking_scores = load_numpy(dir_input + 'docking_scores')
 
     with open(dir_input + 'fingerprint_dict.pickle', 'rb') as f:
         fingerprint_dict = pickle.load(f)
@@ -149,7 +158,7 @@ if __name__ == "__main__":
     n_fingerprint = len(fingerprint_dict)
 
     """Create a dataset and split it into train/dev/test."""
-    dataset = list(zip(Smiles, Molecules, adjacencies))
+    dataset = list(zip(Smiles, Molecules, adjacencies, docking_scores))
 
 
     """Set a model."""
