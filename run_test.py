@@ -21,9 +21,9 @@ class GraphNeuralNetwork(nn.Module):
         self.embed_fingerprint = nn.Embedding(n_fingerprint, dim)
         self.W_fingerprint = nn.ModuleList([nn.Linear(dim, dim)
                                             for _ in range(hidden_layer)])
-        self.W_output = nn.ModuleList([nn.Linear(dim+96, dim+96)
+        self.W_output = nn.ModuleList([nn.Linear(dim+2, dim+2)
                                        for _ in range(output_layer)])
-        self.W_property = nn.Linear(dim+96, 2)
+        self.W_property = nn.Linear(dim+2, 2)
 
     def pad(self, matrices, pad_value):
         """Pad adjacency matrices for batch processing."""
@@ -144,7 +144,7 @@ if __name__ == "__main__":
         print('The code uses CPU!!!')
 
     """Load preprocessed test data."""
-    dir_input = ('test/radius' + radius + '/')
+    dir_input = ('synthetic_test/radius' + radius + '/')
     with open(dir_input + 'Smiles.txt') as f:
         Smiles = f.read().strip().split()
 #        print(Smiles)
@@ -171,7 +171,7 @@ if __name__ == "__main__":
         if filename.endswith('.txt'):
             pass
         else:
-            checkpoint = torch.load('fullmodel/'+filename)
+            checkpoint = torch.load('fullmodel/'+ filename)
             model.load_state_dict(checkpoint)
             model = model.to(device)
     
@@ -224,7 +224,7 @@ if __name__ == "__main__":
                      'softmax_score': merged_scores,
                      })
             print(results)
-#            results.to_csv('bootstrapping_results/' + str(filename) +'EGNN_results.csv', header=True, index=False)
+            results.to_csv('bootstrapping_results/' + str(filename) +'EGNN_results.csv', header=True, index=False)
             all_model_preds.append(merged_scores)
             dataframe[str(filename)] = merged_scores
    
