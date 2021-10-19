@@ -44,7 +44,7 @@ Note that the above commands are tested on Ubuntu 16.04 and 18.04.
 
 ### Running the EGNN code
 
-All the files in the *input* are prepared for the compounds discussed in the paper. Each line of the text file corresponds to a compound used in the training (*data.txt*) and test sets (*test.txt*). THe first column is the SMILES string for the molecule, the next 96 columns are the 96 scores obtained from docking the compound with CANDOCK. In the **data.txt** file, there is an additional column to denote if the compound is active or inactive (with a 0 or 1, respectively).
+All the files in the *input* are prepared for the compounds discussed in the paper. Each line of the text file corresponds to a compound used in the training (*data.txt*) and test sets (*test.txt*). THe first column is the SMILES string for the molecule, the next 2 columns are the best two scores out of 96 scores obtained from docking the compound with CANDOCK. Best scoring functions were determined using Kappa statistics. In the **data.txt** file, there is an additional column to denote if the compound is active or inactive (with a 0 or 1, respectively).
 
 After creating/editing the above two files, you must run the *preprocess_train_data.sh* script. If any changes to the compounds is made in either *data.txt* or *test.txt*, the script must be run again. You must supply the name of the dataset and the radius used for fingerprinting. By default, the dataset will be named PDL1 and the radius will be 2. This script will populate the folders *train* and *test* with the required data for running the model.
 
