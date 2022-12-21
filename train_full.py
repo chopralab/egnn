@@ -258,6 +258,7 @@ if __name__ == "__main__":
    
     index_test, test_data = map(list, zip(*test_data))
     
+
     
     """Saving train+validation set data""" 
     np.save('train/radius'+str(radius)+'/' + 'Test_data', train_valid_data)
@@ -285,13 +286,14 @@ if __name__ == "__main__":
     """Saving Test set data""" 
     np.save('test/radius'+str(radius)+'/' + 'Test_data', test_data)
     
+    
     """"saving test set smiles"""    
     Smiles, Molecules, adjacencies, docking_scores, correct_properties = map(list, zip(*test_data))
     
     with open('test/radius'+str(radius)+'/' +'test_smiles.txt', 'w') as k:
         for listitem in Smiles:
             k.write('%s\n' % listitem)   
-    print(correct_properties)
+#    print(correct_properties)
 
     with open('test/radius'+str(radius)+'/' +'correct_properties.txt', 'w') as k:
         for listitem in np.stack(correct_properties, axis=1):
@@ -302,7 +304,6 @@ if __name__ == "__main__":
     with open('test/radius'+str(radius)+'/' +'index_test.txt', 'w') as k:
         for listitem in index_test:
             k.write('%s\n' % listitem)   
-
 
         
     
@@ -316,8 +317,8 @@ if __name__ == "__main__":
 
     
     """Set a model."""
-    random.seed(500)
-    x = [random.randint(1,50000000) for i in range(128)]
+    random.seed(400)
+    x = [random.randint(1,50000000) for i in range(872)]
     for l in x:
         torch.manual_seed(l)
         model = GraphNeuralNetwork().to(device)

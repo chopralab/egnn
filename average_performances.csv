@@ -1,0 +1,13 @@
+mean: 
+AUC          0.897706
+precision    0.777745
+recall       0.963400
+kappa        0.628286
+dtype: float64
+
+std: 
+AUC          0.063967
+precision    0.071021
+recall       0.067565
+kappa        0.135575
+dtype: float64

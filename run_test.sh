@@ -1,4 +1,9 @@
 #!/bin/bash
+#SBATCH -A gchopra
+#SBATCH --nodes=1
+#SBATCH -n 20
+#SBATCH --time=48:00:00
+
 
 DATASET=PDL1
 # DATASET=yourdata
@@ -23,4 +28,4 @@ weight_decay=1e-6
 iteration=100
 
 setting=$DATASET--radius$radius--update_$update--output_$output--dim$dim--hidden_layer$hidden_layer--output_layer$output_layer--batch$batch--lr$lr--lr_decay$lr_decay--decay_interval$decay_interval--weight_decay$weight_decay--iteration$iteration
-python run_test.py $DATASET $radius $update $output $dim $hidden_layer $output_layer $batch $lr $lr_decay $decay_interval $weight_decay $iteration $setting
+python run_test_for_hold_out_test.py $DATASET $radius $update $output $dim $hidden_layer $output_layer $batch $lr $lr_decay $decay_interval $weight_decay $iteration $setting
